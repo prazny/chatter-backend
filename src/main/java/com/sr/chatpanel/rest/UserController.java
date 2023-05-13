@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-   /* @GetMapping("/profile")
+    @GetMapping("/profile")
     public User getProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    }*/
+        return (User) authentication.getPrincipal();
+    }
 }
