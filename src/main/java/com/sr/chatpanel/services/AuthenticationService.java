@@ -13,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -49,8 +52,14 @@ public class AuthenticationService {
                 .orElseThrow();
 
         var jwtToken = jwtService.generateToken(user);
+
+
+        long expiresInMillis = jwtService.extractExpiration(jwtToken).getTime() - (new Date()).getTime();
+        long expiresInSecs = expiresInMillis / 1000;
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .expiresIn(expiresInSecs)
                 .build();
     }
 }
