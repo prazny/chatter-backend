@@ -23,7 +23,6 @@ public class ChatPanelApplication {
     }
 
 
-
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -36,14 +35,4 @@ public class ChatPanelApplication {
             }
         };
     }
-
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .components(new Components()
-                        .addSecuritySchemes("bearer-key",
-                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
-    }
-
-
 }
