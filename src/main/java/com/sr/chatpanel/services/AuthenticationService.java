@@ -7,14 +7,16 @@ import com.sr.chatpanel.config.auth.JwtService;
 import com.sr.chatpanel.models.Role;
 import com.sr.chatpanel.models.User;
 import com.sr.chatpanel.repositories.UserRepository;
+import com.sr.chatpanel.rest.user.UpdatePasswordRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +42,11 @@ public class AuthenticationService {
                 .build();
     }
 
+    public void updatePassword(User user, UpdatePasswordRequest request) {
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        repository.save(user);
+    }
+
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -61,5 +68,10 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .expiresIn(expiresInSecs)
                 .build();
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
     }
 }
