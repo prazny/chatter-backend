@@ -4,6 +4,7 @@ import com.sr.chatpanel.models.User;
 import com.sr.chatpanel.services.AuthenticationService;
 import com.sr.chatpanel.services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
