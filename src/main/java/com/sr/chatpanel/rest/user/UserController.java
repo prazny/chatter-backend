@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PatchMapping("")
-    public void updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
+    public void updatePassword(@Valid @RequestBody UpdatePasswordRequest updatePasswordRequest) {
         User user = authenticationService.getCurrentUser();
         authenticationService.updatePassword(user, updatePasswordRequest);
     }
