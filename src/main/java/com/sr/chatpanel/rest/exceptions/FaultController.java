@@ -26,26 +26,27 @@ public class FaultController {
         jsonObject.put("title", "Validation errors");
 
 
-        final JSONArray jsonArray = new JSONArray();
+        //final JSONArray jsonArray = new JSONArray();
+        JSONObject errors = new JSONObject();
 
         for (final var constraint : e.getFieldErrors()) {
 
             String field = constraint.getField();
             String message = constraint.getDefaultMessage();
 
-            System.out.println(message);
+           // System.out.println(message);
 
-            JSONObject jsonError = new JSONObject();
-            jsonError.put("field", field);
-            jsonError.put("violationMessage", message);
-            jsonArray.put(jsonError);
+            JSONArray jsonError = new JSONArray();
+            jsonError.put(message);
+            //jsonError.put("violationMessage", message);
+            errors.put(field, jsonError);
 
         }
 
-        JSONObject errorJsonEntity = jsonObject.put("errors", jsonArray);
+        JSONObject errorJsonEntity = jsonObject.put("errors", errors);
 
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .header(HttpHeaders.CONTENT_TYPE,
                         MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
                 .body(errorJsonEntity.toString());
