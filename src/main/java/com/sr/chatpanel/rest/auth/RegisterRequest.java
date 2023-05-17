@@ -1,5 +1,8 @@
 package com.sr.chatpanel.rest.auth;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
+    @NotBlank
     private String firstname;
     private String lastname;
+    @Email
+    @NotBlank
     private String email;
-    private String password;
+    @Size(min = 5, max = 30, message = "Password must be between 5 and 30.")
+    String password;
 }
