@@ -1,5 +1,9 @@
 package com.sr.chatpanel.rest.exceptions;
 
+import com.mysql.cj.xdevapi.JsonArray;
+import jakarta.validation.ConstraintViolationException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.mediatype.problem.Problem;
 import org.springframework.http.HttpHeaders;
@@ -17,12 +21,33 @@ public class FaultController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     ResponseEntity<?> PNFEHandler(MethodArgumentNotValidException e) {
+
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", "Validation errors");
+
+
+        final JSONArray jsonArray = new JSONArray();
+
+        for (final var constraint : e.getFieldErrors()) {
+
+            String field = constraint.getField();
+            String message = constraint.getDefaultMessage();
+
+            System.out.println(message);
+
+            JSONObject jsonError = new JSONObject();
+            jsonError.put("field", field);
+            jsonError.put("violationMessage", message);
+            jsonArray.put(jsonError);
+
+        }
+
+        JSONObject errorJsonEntity = jsonObject.put("errors", jsonArray);
+
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .header(HttpHeaders.CONTENT_TYPE,
                         MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
-                .body(Problem.create()
-                        .withStatus(HttpStatus.NOT_FOUND)
-                        .withTitle(HttpStatus.NOT_FOUND.name())
-                        .withDetail("Validation problem"));
+                .body(errorJsonEntity.toString());
     }
 }
