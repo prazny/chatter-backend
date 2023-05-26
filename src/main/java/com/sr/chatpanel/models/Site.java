@@ -1,10 +1,13 @@
 package com.sr.chatpanel.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Builder
@@ -16,8 +19,23 @@ import lombok.*;
 @Setter
 public class Site {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @Column(name = "name")
+    @Size(min = 5, max = 30, message = "Must be between 5 and 100.")
+    @NotBlank
+    private String name;
     @Column(name = "uri")
+    @Size(min = 5, max = 30, message = "Must be between 5 and 100.")
+    @NotBlank
+    @URL
     private String uri;
+
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    private User user;
 
 }

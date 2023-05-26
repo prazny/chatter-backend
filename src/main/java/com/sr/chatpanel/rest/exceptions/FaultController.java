@@ -25,7 +25,6 @@ public class FaultController {
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("title", "Validation errors");
 
-
         //final JSONArray jsonArray = new JSONArray();
         JSONObject errors = new JSONObject();
 
@@ -34,7 +33,7 @@ public class FaultController {
             String field = constraint.getField();
             String message = constraint.getDefaultMessage();
 
-           // System.out.println(message);
+            // System.out.println(message);
 
             JSONArray jsonError = new JSONArray();
             jsonError.put(message);
@@ -50,5 +49,20 @@ public class FaultController {
                 .header(HttpHeaders.CONTENT_TYPE,
                         MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
                 .body(errorJsonEntity.toString());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    ResponseEntity<?> PNFEHandler(UnauthorizedException e) {
+
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", "Unauthorized.");
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .header(HttpHeaders.CONTENT_TYPE,
+                        MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
+                .body(jsonObject.toString());
     }
 }

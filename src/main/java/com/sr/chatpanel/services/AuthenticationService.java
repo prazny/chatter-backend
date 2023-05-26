@@ -28,8 +28,8 @@ public class AuthenticationService {
 
     public AuthenticationResponse registerSiteOwner(RegisterRequest request) {
         var user = User.builder()
-                .firstName(request.getFirstname())
-                .lastName(request.getLastname())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.SITE_OWNER)
