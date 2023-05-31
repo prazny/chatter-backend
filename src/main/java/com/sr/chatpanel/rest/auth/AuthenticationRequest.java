@@ -16,4 +16,5 @@ public class AuthenticationRequest {
     private String email;
     @Size(min = 5, max = 30, message = "Password must be between 5 and 30.")
     String password;
+
 }
