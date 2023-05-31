@@ -64,6 +64,8 @@ public class SecurityConfig {
                 .oauth2Login() //http://localhost:8000/api/oauth2/authorization/google
                 .userInfoEndpoint()
                 .userService(new DefaultOAuth2UserService())
+
+
                 .and()
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
