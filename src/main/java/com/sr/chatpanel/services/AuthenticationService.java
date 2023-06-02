@@ -1,5 +1,6 @@
 package com.sr.chatpanel.services;
 
+import com.sr.chatpanel.models.Provider;
 import com.sr.chatpanel.rest.auth.AuthenticationRequest;
 import com.sr.chatpanel.rest.auth.AuthenticationResponse;
 import com.sr.chatpanel.rest.auth.RegisterRequest;
@@ -33,6 +34,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.SITE_OWNER)
+                .provider(Provider.LOCAL)
                 .build();
 
         repository.save(user);
@@ -74,4 +76,5 @@ public class AuthenticationService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }
+
 }
