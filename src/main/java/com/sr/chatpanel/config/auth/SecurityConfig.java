@@ -46,7 +46,11 @@ public class SecurityConfig {
                 .cors().disable()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/v3/api-docs/**", "/docs", "/docs/**", "/api/docs", "/swagger-ui/**" )
+                .requestMatchers(
+                        "/auth/**", "/v3/api-docs/**", "/docs",
+                        "/docs/**", "/api/docs",
+                        "/swagger-ui/**", "/actuator/**","/wssrv" , "/wssrv/**", "/api/wssrv/**", "/api/wssrv"
+                )
                 .permitAll()
 
                 .anyRequest()
@@ -70,7 +74,7 @@ public class SecurityConfig {
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        OAuth2User oAuth2User =  (OAuth2User) authentication.getPrincipal();
+                        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
                         userService.processOAuthPostLogin(oAuth2User);
 
                         AuthenticationResponse token = authenticationService.authenticate(new AuthenticationRequest(oAuth2User.getAttribute("email"), oAuth2User.getAttribute("sub")));
