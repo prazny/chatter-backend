@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,15 @@ import lombok.NoArgsConstructor;
 public class Chat {
     @Id
     private Long id;
-    public String customerName;
+
+    private ChatStatus status;
+
+    @NotBlank
+    private String customerName;
+
+    @NotBlank
+    private String customerSessionId;
+
+    private String chatToken;
 
 }
