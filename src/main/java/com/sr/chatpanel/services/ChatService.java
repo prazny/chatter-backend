@@ -3,6 +3,7 @@ package com.sr.chatpanel.services;
 import com.sr.chatpanel.models.Chat;
 import com.sr.chatpanel.models.ChatStatus;
 import com.sr.chatpanel.repositories.ChatRepository;
+import com.sr.chatpanel.rest.exceptions.EntityNotFound;
 import com.sr.chatpanel.utils.StringGenerator;
 import com.sr.chatpanel.websocket.chat.InitChatRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,10 @@ public class ChatService {
 
     public List<Chat> getMany(ChatStatus status) {
         return (List<Chat>) chatRepository.findAllByStatus(status);
+    }
+
+    public Chat get(int id) throws EntityNotFound {
+        return chatRepository.findById(id).orElseThrow(EntityNotFound::new);
     }
 
     public Chat init(InitChatRequest chatRequest, String sessionId) {
