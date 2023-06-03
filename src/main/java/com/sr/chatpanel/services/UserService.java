@@ -37,6 +37,14 @@ public class UserService {
                     .build();
             repository.save(newUser);
         }
-
     }
+
+    public void saveWsSession(String mail, String session) {
+        User user = repository.findByEmail(mail).orElse(null);
+        if(user != null) {
+            user.setWsSessionId(session);
+            repository.save(user);
+        }
+    }
+
 }

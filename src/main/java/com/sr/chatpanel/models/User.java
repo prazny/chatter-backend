@@ -1,5 +1,6 @@
 package com.sr.chatpanel.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.swing.text.View;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +50,7 @@ public class User implements UserDetails {
         return id;
     }
 
-
+    public String wsSessionId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

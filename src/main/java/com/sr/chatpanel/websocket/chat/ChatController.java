@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.util.HtmlUtils;
 @AllArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/customer/initChat")
     public Chat init(
@@ -23,4 +25,10 @@ public class ChatController {
     ) {
         return chatService.init(chat, sessionId);
     }
+
+    @MessageMapping("/customer/sendText")
+    public void sendText(String content) {
+
+    }
+
 }

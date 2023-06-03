@@ -65,4 +65,19 @@ public class FaultController {
                         MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
                 .body(jsonObject.toString());
     }
+
+    @ResponseBody
+    @ExceptionHandler(ActionImpossible.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    ResponseEntity<?> PNFEHandler(ActionImpossible e) {
+
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", "Action impossible.");
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .header(HttpHeaders.CONTENT_TYPE,
+                        MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
+                .body(jsonObject.toString());
+    }
 }

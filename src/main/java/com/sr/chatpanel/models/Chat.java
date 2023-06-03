@@ -29,8 +29,9 @@ public class Chat {
 
     private String chatToken;
 
-    public String getStatus() {
-        return status.toString();
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
 }

@@ -3,6 +3,7 @@ package com.sr.chatpanel.rest.chat;
 import com.sr.chatpanel.models.Chat;
 import com.sr.chatpanel.models.ChatStatus;
 import com.sr.chatpanel.models.User;
+import com.sr.chatpanel.rest.exceptions.ActionImpossible;
 import com.sr.chatpanel.rest.exceptions.EntityNotFound;
 import com.sr.chatpanel.services.ChatService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,12 +24,18 @@ public class ChatRestController {
     private final ChatService chatService;
 
     @GetMapping("/")
-    public ResponseEntity<Object> getChatsWithStatus(ChatStatus status, @AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(chatService.getMany(status), HttpStatus.OK);
+    public ResponseEntity<Object> getChats(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(chatService.getMany(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Chat> get(@PathVariable int id) throws EntityNotFound {
         return new ResponseEntity<>(chatService.get(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/assign")
+    public void assign(@PathVariable int id, @AuthenticationPrincipal User user) throws EntityNotFound, ActionImpossible {
+        Chat chat = chatService.get(id);
+        chatService.assign(chat, user);
     }
 }
