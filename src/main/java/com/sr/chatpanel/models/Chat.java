@@ -29,4 +29,8 @@ public class Chat {
 
     private String chatToken;
 
+    public String getStatus() {
+        return status.toString();
+    }
+
 }

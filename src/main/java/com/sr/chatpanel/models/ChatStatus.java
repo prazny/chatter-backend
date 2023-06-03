@@ -5,4 +5,5 @@ public enum ChatStatus {
     NEW, // waiting for assign to consultant, next -> IN_PROGRESS
     IN_PROGRESS, // talk with consultant, next -> BACKGROUND
     ENDED // unused now
+
 }
