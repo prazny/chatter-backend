@@ -1,4 +1,4 @@
-package com.sr.chatpanel.websocket;
+package com.sr.chatpanel.websocket.chat;
 
 import com.sr.chatpanel.models.Chat;
 import com.sr.chatpanel.services.ChatService;
@@ -16,9 +16,9 @@ import org.springframework.web.util.HtmlUtils;
 public class ChatController {
     private final ChatService chatService;
 
-    @MessageMapping("/customer/initCHat")
-    public Chat greeting(
-            Chat chat,
+    @MessageMapping("/customer/initChat")
+    public Chat init(
+            InitChatRequest chat,
             @Header("simpSessionId") String sessionId
     ) {
         return chatService.init(chat, sessionId);

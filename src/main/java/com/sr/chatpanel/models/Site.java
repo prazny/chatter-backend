@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
@@ -21,15 +22,21 @@ public class Site {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @Column(name = "name")
     @Size(min = 5, max = 30, message = "Must be between 5 and 100.")
     @NotBlank
     private String name;
+
     @Column(name = "uri")
     @Size(min = 5, max = 30, message = "Must be between 5 and 100.")
+
     @NotBlank
     @URL
     private String uri;
+
+    @Size(max = 40)
+    private String chatName;
 
 
     @ManyToOne()

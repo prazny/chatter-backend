@@ -1,9 +1,6 @@
 package com.sr.chatpanel.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +15,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "chat")
 public class Chat {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private ChatStatus status;
 
     @NotBlank
