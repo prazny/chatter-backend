@@ -1,11 +1,8 @@
 package com.sr.chatpanel.rest.exceptions;
 
-import com.mysql.cj.xdevapi.JsonArray;
-import jakarta.validation.ConstraintViolationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.hateoas.mediatype.problem.Problem;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
