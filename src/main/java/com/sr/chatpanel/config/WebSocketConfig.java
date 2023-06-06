@@ -3,6 +3,7 @@ package com.sr.chatpanel.config;
 import com.sr.chatpanel.config.auth.JwtService;
 import com.sr.chatpanel.models.User;
 import com.sr.chatpanel.services.UserService;
+import com.sr.chatpanel.websocket.CustomHandshakeHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
@@ -33,16 +34,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final UserService userService;
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/customer");
         config.setApplicationDestinationPrefixes("/app");
-        config.setUserDestinationPrefix("/user");
+//        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/wssrv")
+//                .setAllowedOrigins("*")
                 .setAllowedOriginPatterns("*")
+                .setHandshakeHandler(new CustomHandshakeHandler())
                 .withSockJS();
     }
 

@@ -1,10 +1,10 @@
 package com.sr.chatpanel.websocket;
 
-public class TextMessageDTO {
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public class TextMessageResponse {
     private String message;
-
-    private String userTo;
-
     private String date;
 
     public String getMessage() {
@@ -15,13 +15,6 @@ public class TextMessageDTO {
         this.message = message;
     }
 
-    public String getUserTo() {
-        return userTo;
-    }
-
-    public void setUserTo(String userTo) {
-        this.userTo = userTo;
-    }
 
     public String getDate() {
         return date;

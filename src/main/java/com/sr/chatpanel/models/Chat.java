@@ -27,6 +27,9 @@ public class Chat {
     @NotBlank
     private String customerSessionId;
 
+    @NotBlank
+    private String customerUUID;
+
     private String chatToken;
 
     @ManyToOne

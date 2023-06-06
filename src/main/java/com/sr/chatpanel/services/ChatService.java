@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -41,11 +42,12 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    public Chat init(InitChatRequest chatRequest, String sessionId) {
+    public Chat init(InitChatRequest chatRequest, Principal user, String sessionId) {
         Chat chat = new Chat();
-        chat.setStatus(ChatStatus.BACKGROUND);
+        chat.setStatus(ChatStatus.NEW);
         chat.setCustomerName(chatRequest.getNick());
         chat.setChatToken(StringGenerator.getRandomAlphaString(Integer.parseInt(tokenSize)));
+        chat.setCustomerUUID(user.getName());
         chat.setCustomerSessionId(sessionId);
 
         this.chatRepository.save(chat);
