@@ -25,10 +25,6 @@ COPY src ./src
 # Download maven deps
 RUN mvn -f pom.xml clean package -DskipTests
 
-RUN echo $(ls -la)
-RUN echo $(ls -la ./target)
-RUN echo $(ls -la /app/target)
-
 # Copy jar file to main direct.
 RUN cp /app/target/*.jar /app/app.jar
 
