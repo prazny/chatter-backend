@@ -45,6 +45,13 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
+    public void finish(Chat chat, User user) throws ActionImpossible {
+        if(!chat.getStatus().equals(ChatStatus.IN_PROGRESS)) throw new ActionImpossible();
+        chat.setStatus(ChatStatus.ENDED);
+        chat.setUser(user);
+        chatRepository.save(chat);
+    }
+
     public Chat init(InitChatRequest chatRequest, Principal user, String sessionId) {
         Chat chat = new Chat();
         chat.setStatus(ChatStatus.NEW);

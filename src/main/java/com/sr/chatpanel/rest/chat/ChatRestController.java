@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,8 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 public class ChatRestController {
+
+    private SimpMessagingTemplate simpMessagingTemplate;
     private final ChatService chatService;
     private final MessageService messageService;
 
@@ -45,5 +48,13 @@ public class ChatRestController {
     public void assign(@PathVariable int id, @AuthenticationPrincipal User user) throws EntityNotFound, ActionImpossible {
         Chat chat = chatService.get(id);
         chatService.assign(chat, user);
+    }
+
+    @PostMapping("/{id}/end")
+    public void end(@PathVariable int id, @AuthenticationPrincipal User user) throws EntityNotFound, ActionImpossible {
+        Chat chat = chatService.get(id);
+        simpMessagingTemplate.convertAndSendToUser(chat.getCustomerUUID(),"/customer/finished",
+                "Finished");
+        chatService.finish(chat, user);
     }
 }
