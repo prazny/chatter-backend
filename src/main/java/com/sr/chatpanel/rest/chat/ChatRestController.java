@@ -47,6 +47,8 @@ public class ChatRestController {
     @PostMapping("/{id}/assign")
     public void assign(@PathVariable int id, @AuthenticationPrincipal User user) throws EntityNotFound, ActionImpossible {
         Chat chat = chatService.get(id);
+        simpMessagingTemplate.convertAndSendToUser(chat.getCustomerUUID(),"/customer/assigned",
+                user.getFirstName() + " " + user.getLastName());
         chatService.assign(chat, user);
     }
 
