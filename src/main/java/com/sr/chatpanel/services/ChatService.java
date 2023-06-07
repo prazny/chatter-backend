@@ -26,6 +26,9 @@ public class ChatService {
     public List<Chat> getMany() {
         return (List<Chat>) chatRepository.findAll();
     }
+    public Chat getUsingToken(String token) {
+        return  chatRepository.findByChatToken(token);
+    }
 
     public List<Chat> getManyWithStatus(ChatStatus status) {
         return (List<Chat>) chatRepository.findAllByStatus(status);
@@ -52,5 +55,13 @@ public class ChatService {
 
         this.chatRepository.save(chat);
         return chat;
+    }
+
+    public Chat updateUUID(String token, String newUUID){
+        Chat found_chat = this.getUsingToken(token);
+
+        found_chat.setCustomerUUID(newUUID);
+        this.chatRepository.save(found_chat);
+        return found_chat;
     }
 }

@@ -9,4 +9,5 @@ import java.util.Collection;
 
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
     Collection<Chat> findAllByStatus(ChatStatus status);
+    Chat findByChatToken(String token);
 }

@@ -5,8 +5,7 @@ import com.sr.chatpanel.models.Message;
 import com.sr.chatpanel.models.MessageSender;
 import com.sr.chatpanel.services.ChatService;
 import com.sr.chatpanel.services.MessageService;
-import com.sr.chatpanel.websocket.TextMessageDTO;
-import com.sr.chatpanel.websocket.TextMessageResponse;
+import com.sr.chatpanel.websocket.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -38,8 +38,21 @@ public class ChatController {
             @Header("simpSessionId") String sessionId
     ) {
         Chat new_chat = chatService.init(chat, user, sessionId);
-        simpMessagingTemplate.convertAndSendToUser(new_chat.getCustomerUUID(),"/customer/token", new_chat.getChatToken());
+        simpMessagingTemplate.convertAndSendToUser(new_chat.getCustomerUUID(),"/customer/token",
+                new InitChatResponse( new_chat.getChatToken(), new_chat.getCustomerUUID()));
         return new_chat;
+    }
+
+    @MessageMapping("/customer/reloadChat")
+    public ResponseEntity<Void> reloadChat(
+            String chatToken,
+            Principal user,
+            @Header("simpSessionId") String sessionId
+    ) {
+        List<Message> messages = messageService.getManyWithChatToken(chatToken);
+        chatService.updateUUID(chatToken, user.getName());
+        simpMessagingTemplate.convertAndSendToUser(user.getName(),"/customer/reload", messages);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @MessageMapping("/customer/initConsul")

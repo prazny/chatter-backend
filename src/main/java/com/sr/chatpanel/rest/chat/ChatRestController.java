@@ -40,10 +40,6 @@ public class ChatRestController {
         Chat chat = chatService.get(id);
         return new ResponseEntity<>(messageService.getManyWithChatToken(chat.getChatToken()), HttpStatus.OK);
     }
-//    @GetMapping("/{token}/mess")
-//    public ResponseEntity<Object> getMessagesFromToken(@PathVariable String token) throws EntityNotFound {
-//        return new ResponseEntity<>(messageService.getManyWithChatToken(token), HttpStatus.OK);
-//    }
 
     @PostMapping("/{id}/assign")
     public void assign(@PathVariable int id, @AuthenticationPrincipal User user) throws EntityNotFound, ActionImpossible {
