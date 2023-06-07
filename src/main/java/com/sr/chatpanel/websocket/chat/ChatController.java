@@ -39,7 +39,7 @@ public class ChatController {
     ) {
         Chat new_chat = chatService.init(chat, user, sessionId);
         simpMessagingTemplate.convertAndSendToUser(new_chat.getCustomerUUID(),"/customer/token",
-                new InitChatResponse( new_chat.getChatToken(), new_chat.getCustomerUUID()));
+               new_chat.getChatToken());
         return new_chat;
     }
 
