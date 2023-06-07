@@ -6,6 +6,7 @@ import com.sr.chatpanel.models.User;
 import com.sr.chatpanel.rest.exceptions.ActionImpossible;
 import com.sr.chatpanel.rest.exceptions.EntityNotFound;
 import com.sr.chatpanel.services.ChatService;
+import com.sr.chatpanel.services.MessageService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ChatRestController {
     private final ChatService chatService;
+    private final MessageService messageService;
 
     @GetMapping("/")
     public ResponseEntity<Object> getChats(@AuthenticationPrincipal User user) {
@@ -31,6 +33,12 @@ public class ChatRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Chat> get(@PathVariable int id) throws EntityNotFound {
         return new ResponseEntity<>(chatService.get(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/mess")
+    public ResponseEntity<Object> getMessages(@PathVariable int id) throws EntityNotFound {
+        Chat chat = chatService.get(id);
+        return new ResponseEntity<>(messageService.getManyWithChatToken(chat.getChatToken()), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/assign")

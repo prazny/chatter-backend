@@ -1,7 +1,10 @@
 package com.sr.chatpanel.websocket.chat;
 
 import com.sr.chatpanel.models.Chat;
+import com.sr.chatpanel.models.Message;
+import com.sr.chatpanel.models.MessageSender;
 import com.sr.chatpanel.services.ChatService;
+import com.sr.chatpanel.services.MessageService;
 import com.sr.chatpanel.websocket.TextMessageDTO;
 import com.sr.chatpanel.websocket.TextMessageResponse;
 import lombok.AllArgsConstructor;
@@ -24,6 +27,8 @@ import java.security.Principal;
 @AllArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+
+    private final MessageService messageService;
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/customer/initChat")
@@ -32,7 +37,9 @@ public class ChatController {
             Principal user,
             @Header("simpSessionId") String sessionId
     ) {
-        return chatService.init(chat, user, sessionId);
+        Chat new_chat = chatService.init(chat, user, sessionId);
+        simpMessagingTemplate.convertAndSendToUser(new_chat.getCustomerUUID(),"/customer/token", new_chat.getChatToken());
+        return new_chat;
     }
 
     @MessageMapping("/customer/initConsul")
@@ -55,7 +62,19 @@ public class ChatController {
     public ResponseEntity<Void> sendMessage(@Payload TextMessageDTO textMessageDTO, @Header("simpSessionId") String sessionId) {
         simpMessagingTemplate.convertAndSendToUser(textMessageDTO.getUserTo(),"/customer/message",
                 new TextMessageResponse(textMessageDTO.getMessage(), textMessageDTO.getDate()));
-        System.out.println(textMessageDTO.getUserTo());
+
+        System.out.println(textMessageDTO.getSenderName());
+
+        Message message = Message.builder()
+                                    .senderName(textMessageDTO.getSenderName())
+                                    .content(textMessageDTO.getMessage())
+                                    .chatToken(textMessageDTO.getChatToken())
+                                    .sendDate(textMessageDTO.getDate())
+                                    .senderType(textMessageDTO.getSenderType())
+                                    .build();
+
+        messageService.add(message);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -1,6 +1,7 @@
 package com.sr.chatpanel.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,20 +18,21 @@ import java.util.Date;
 @Table(name = "human_message")
 public class Message  {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
-    private Date sendDate;
+    @NotBlank
+    private String sendDate;
 
-    @Temporal(TemporalType.TIME)
-    private Time sendTime;
+    @Enumerated(EnumType.STRING)
+    private MessageSender senderType;
 
-    private MessageSender sender;
+    @NotBlank
+    private String senderName;
 
-    //private User consultant;
+    @NotBlank
+    private String chatToken;
 
     private String content;
-
-
 
 }
